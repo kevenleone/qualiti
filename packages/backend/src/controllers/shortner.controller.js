@@ -1,5 +1,6 @@
 const { v4 } = require('uuid')
 const ShortnerModel = require('../models/shortner.model')
+
 class Shortner {
   async index (req, res) {
     try {
@@ -13,6 +14,7 @@ class Shortner {
   async store (req, res) {
     try {
       const { url } = req.body
+      console.log(req.body)
       const [hash] = v4().split('-')
       const shortner = await ShortnerModel.create({ url, hash })
       res.send({ message: 'Created', shortner })
@@ -41,12 +43,43 @@ class Shortner {
     }
   }
 
-  remove (req, res) {
-    res.send({ message: 'Removeu!' })
+  async getOne (req, res) {
+    try {
+      const { id } = req.params
+      const shortner = await ShortnerModel.findById(id)
+      res.send({ shortner })
+    } catch (error) {
+      res.status(400).send({ message: error.message })
+    }
   }
 
-  getOne (req, res) {
-    res.send({ message: 'Pegou o primeiro!' })
+  async remove (req, res) {
+    try {
+      const { id } = req.params
+      await ShortnerModel.findByIdAndDelete(id)
+      res.send({ message: 'deleted' })
+    } catch (error) {
+      res.status(400).send({ message: error.message })
+    }
+  }
+
+  async redirectTo (req, res) {
+    try {
+      const { hash } = req.params
+      const shortner = await ShortnerModel.findOne({ hash })
+
+      if (!shortner) {
+        throw new Error('Hash Invalid')
+      }
+
+      shortner.hits++
+
+      await shortner.save()
+
+      res.redirect(shortner.url)
+    } catch (error) {
+      res.status(400).send({ message: error.message })
+    }
   }
 }
 

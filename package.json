@@ -1,28 +1,18 @@
 {
-  "name": "nassau",
-  "version": "1.0.0",
-  "description": "Projeto Qualiti - Nassau",
-  "main": "index.js",
-  "scripts": {
-    "dev": "nodemon src/index.js",
-    "start": "node src/index.js"
-  },
-  "author": "Keven Leone",
-  "license": "ISC",
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "mongoose": "^5.11.12",
-    "uuid": "^8.3.2"
-  },
-  "devDependencies": {
-    "eslint": "^7.18.0",
-    "eslint-config-standard": "^16.0.2",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "nodemon": "^2.0.7"
+    "name": "monorepo",
+    "version": "1.0.0",
+    "repository": "https://github.com/kevenleone/qualiti.git",
+    "author": "Keven <keven.santos.sz@gmail.com>",
+    "license": "MIT",
+    "private": true,
+    "scripts": {
+      "start:frontend": "yarn workspace @monorepo/frontend dev",
+      "start:backend": "yarn workspace @monorepo/backend dev"
+    },
+    "workspaces": {
+      "packages": [
+        "packages/*"
+      ]
+    }
   }
-}
+  
