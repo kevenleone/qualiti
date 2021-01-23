@@ -1,10 +1,13 @@
 const { v4 } = require('uuid')
+
 const ShortnerModel = require('../models/shortner.model')
 
 class Shortner {
   async index (req, res) {
     try {
-      const shortner = await ShortnerModel.find()
+      const shortner = await ShortnerModel.find({
+        created_by: req.loggedUser._id
+      })
       res.send({ shortner })
     } catch (error) {
       res.status(400).send({ message: error.message })
@@ -13,10 +16,14 @@ class Shortner {
 
   async store (req, res) {
     try {
+      const loggedUser = req.loggedUser
       const { url } = req.body
-      console.log(req.body)
-      const [hash] = v4().split('-')
-      const shortner = await ShortnerModel.create({ url, hash })
+      const [, hash] = v4().split('-')
+      const shortner = await ShortnerModel.create({
+        url,
+        hash,
+        created_by: loggedUser._id
+      })
       res.send({ message: 'Created', shortner })
     } catch (error) {
       res.status(400).send({ message: error.message })

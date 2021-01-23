@@ -5,6 +5,7 @@ const ShortnerSchema = mongoose.Schema({
   uuid: String,
   expired: { type: Boolean, default: false },
   hits: { type: Number, default: 0 },
+  created_by: String,
   hash: String
 })
 
